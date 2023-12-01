@@ -72,3 +72,19 @@ class TestRover:
         rover.move('R')
 
         assert rover.facing == mars.north
+
+    def test_can_turn_left_then_backtrack(self) -> None:
+        rover = mars.Rover(location=mars.origin, facing=mars.north)
+
+        rover.move('L')
+        rover.backtrack()
+
+        assert rover.facing == mars.north
+
+    def test_can_turn_right_then_backtrack(self) -> None:
+        rover = mars.Rover(location=mars.origin, facing=mars.north)
+
+        rover.move('R')
+        rover.backtrack()
+
+        assert rover.facing == mars.north
