@@ -81,11 +81,13 @@ class Rover:
     def __init__(self, location: Location, facing: Direction) -> None:
         self.location = location
         self.facing = facing
+        self.moves: typing.List[Command] = []
 
     def move(self, instruction: str) -> None:
         command = self.commands[instruction](self)
         command.execute()
-        self.last_command = command
+        self.moves.append(command)
 
     def backtrack(self) -> None:
-        self.last_command.undo()
+        command = self.moves.pop()
+        command.undo()

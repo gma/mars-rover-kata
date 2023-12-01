@@ -88,3 +88,18 @@ class TestRover:
         rover.backtrack()
 
         assert rover.facing == mars.north
+
+    def test_can_backtrack_multiple_commands(self) -> None:
+        rover = mars.Rover(location=mars.origin, facing=mars.north)
+
+        rover.move('M')
+        rover.move('R')
+        rover.move('M')
+        rover.move('L')
+        rover.backtrack()
+        rover.backtrack()
+        rover.backtrack()
+        rover.backtrack()
+
+        assert rover.location == mars.origin
+        assert rover.facing == mars.north
