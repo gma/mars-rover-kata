@@ -9,6 +9,9 @@ class Location:
     def __add__(self, other: 'Location') -> 'Location':
         return self.__class__(self.x + other.x, self.y + other.y)
 
+    def __sub__(self, other: 'Location') -> 'Location':
+        return self.__class__(self.x - other.x, self.y - other.y)
+
 
 Direction = Location
 
@@ -30,10 +33,16 @@ class Command:
     def execute(self) -> None:
         ...
 
+    def undo(self) -> None:
+        ...
+
 
 class MoveForward(Command):
     def execute(self) -> None:
         self.rover.location += self.rover.facing
+
+    def undo(self) -> None:
+        self.rover.location -= self.rover.facing
 
 
 class TurnLeft(Command):
@@ -59,4 +68,9 @@ class Rover:
         self.facing = facing
 
     def move(self, instruction: str) -> None:
-        self.commands[instruction](self).execute()
+        command = self.commands[instruction](self)
+        command.execute()
+        self.last_command = command
+
+    def backtrack(self) -> None:
+        self.last_command.undo()
