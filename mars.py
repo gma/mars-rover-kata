@@ -1,5 +1,4 @@
 import dataclasses
-import operator
 import typing
 
 
@@ -48,31 +47,34 @@ class MoveForward(Command):
 
 
 class Turn(Command):
-    rotate_left = operator.sub
-    rotate_right = operator.add
+    def index_to_left(self, current_index: int) -> int:
+        return current_index - 1
 
-    def turn(self, direction: typing.Callable) -> None:
-        facing_index = compass_points.index(self.rover.facing)
+    def index_to_right(self, current_index: int) -> int:
+        return current_index + 1
+
+    def turn(self, turn_index: typing.Callable[[int], int]) -> None:
+        current_index = compass_points.index(self.rover.facing)
         try:
-            self.rover.facing = compass_points[direction(facing_index, 1)]
+            self.rover.facing = compass_points[turn_index(current_index)]
         except IndexError:
             self.rover.facing = compass_points[0]
 
 
 class TurnLeft(Turn):
     def execute(self) -> None:
-        self.turn(self.rotate_left)
+        self.turn(self.index_to_left)
 
     def undo(self) -> None:
-        self.turn(self.rotate_right)
+        self.turn(self.index_to_right)
 
 
 class TurnRight(Turn):
     def execute(self) -> None:
-        self.turn(self.rotate_right)
+        self.turn(self.index_to_right)
 
     def undo(self) -> None:
-        self.turn(self.rotate_left)
+        self.turn(self.index_to_left)
 
 
 class Rover:
