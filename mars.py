@@ -40,10 +40,10 @@ class Command:
 
 class MoveForward(Command):
     def execute(self) -> None:
-        self.rover.location += self.rover.facing
+        self.rover.location += self.rover.direction
 
     def undo(self) -> None:
-        self.rover.location -= self.rover.facing
+        self.rover.location -= self.rover.direction
 
 
 class Turn(Command):
@@ -54,11 +54,11 @@ class Turn(Command):
         return current_index + 1
 
     def turn(self, turn_index: typing.Callable[[int], int]) -> None:
-        current_index = compass_points.index(self.rover.facing)
+        current_index = compass_points.index(self.rover.direction)
         try:
-            self.rover.facing = compass_points[turn_index(current_index)]
+            self.rover.direction = compass_points[turn_index(current_index)]
         except IndexError:
-            self.rover.facing = compass_points[0]
+            self.rover.direction = compass_points[0]
 
 
 class TurnLeft(Turn):
@@ -80,9 +80,9 @@ class TurnRight(Turn):
 class Rover:
     commands = {'M': MoveForward, 'L': TurnLeft, 'R': TurnRight}
 
-    def __init__(self, location: Location, facing: Direction) -> None:
+    def __init__(self, location: Location, direction: Direction) -> None:
         self.location = location
-        self.facing = facing
+        self.direction = direction
         self.moves: typing.List[Command] = []
 
     def move(self, instruction: str) -> None:

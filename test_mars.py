@@ -22,7 +22,7 @@ class TestLocation:
 class TestRover:
     def test_can_move_forward(self) -> None:
         start = mars.origin
-        rover = mars.Rover(location=start, facing=mars.north)
+        rover = mars.Rover(location=start, direction=mars.north)
 
         rover.move('M')
 
@@ -30,7 +30,7 @@ class TestRover:
 
     def test_can_move_forward_then_backtrack(self) -> None:
         start = mars.origin
-        rover = mars.Rover(location=start, facing=mars.north)
+        rover = mars.Rover(location=start, direction=mars.north)
 
         rover.move('M')
         rover.backtrack()
@@ -38,59 +38,59 @@ class TestRover:
         assert rover.location == start
 
     def test_can_turn_left(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('L')
         rover.move('L')
 
-        assert rover.facing == mars.south
+        assert rover.direction == mars.south
 
     def test_can_turn_right(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('R')
         rover.move('R')
 
-        assert rover.facing == mars.south
+        assert rover.direction == mars.south
 
     def test_can_wrap_around_compass_list_to_left(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('L')
         rover.move('L')
         rover.move('L')
         rover.move('L')
 
-        assert rover.facing == mars.north
+        assert rover.direction == mars.north
 
     def test_can_wrap_around_compass_list_to_right(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('R')
         rover.move('R')
         rover.move('R')
         rover.move('R')
 
-        assert rover.facing == mars.north
+        assert rover.direction == mars.north
 
     def test_can_turn_left_then_backtrack(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('L')
         rover.backtrack()
 
-        assert rover.facing == mars.north
+        assert rover.direction == mars.north
 
     def test_can_turn_right_then_backtrack(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('R')
         rover.backtrack()
 
-        assert rover.facing == mars.north
+        assert rover.direction == mars.north
 
     def test_can_backtrack_multiple_commands(self) -> None:
-        rover = mars.Rover(location=mars.origin, facing=mars.north)
+        rover = mars.Rover(location=mars.origin, direction=mars.north)
 
         rover.move('M')
         rover.move('R')
@@ -102,4 +102,4 @@ class TestRover:
         rover.backtrack()
 
         assert rover.location == mars.origin
-        assert rover.facing == mars.north
+        assert rover.direction == mars.north
